@@ -3,21 +3,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
-
-// Initialize Express App
 const app = express();
 const port = 5000;
 
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Initialize Supabase Client
-
-// GET Route to Fetch All Employees
 app.get("/", async (req, res) => {
     try {
         const { data, error } = await supabase.from("employees").select("*");
@@ -30,12 +23,10 @@ app.get("/", async (req, res) => {
     }
 });
 
-// POST Route to Add an Employee
 app.post("/employees", async (req, res) => {
     try {
         const employee = req.body;
 
-        // Insert into the database
         const { data, error } = await supabase.from("employees").insert([employee]);
         if (error) throw error;
 
@@ -46,7 +37,6 @@ app.post("/employees", async (req, res) => {
     }
 });
 
-// Start Server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
